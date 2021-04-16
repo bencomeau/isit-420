@@ -5,12 +5,12 @@ var router = express.Router();
 // .ADO.Net is a wrapper over raw SQL server interface
 const mongoose = require("mongoose");
 
-const ToDos = require("../ToDos");
+const Motorcycle = require("../Motorcycle");
 
 // edited to include my non-admin, user level account and PW on mongo atlas
 // and also to include the name of the mongo DB that the collection
 const dbURI =
- "your mongo connection string here";
+ "mongodb+srv://xxxxx:xxxxx@cluster0.vyteg.mongodb.net/myFirstDatabase?retryWrites=true&w=majority";
 
 // Make Mongoose use `findOneAndUpdate()`. Note that this option is `true`
 // by default, you need to set it to false.
@@ -38,14 +38,14 @@ router.get('/', function(req, res) {
 });
 
 /* GET all ToDos */
-router.get('/ToDos', function(req, res) {
+router.get('/Motorcycles', function(req, res) {
   // find {  takes values, but leaving it blank gets all}
-  ToDos.find({}, (err, AllToDos) => {
+  Motorcycle.find({}, (err, motorcycles) => {
     if (err) {
       console.log(err);
       res.status(500).send(err);
     }
-    res.status(200).json(AllToDos);
+    res.status(200).json(motorcycles);
   });
 });
 
@@ -53,36 +53,37 @@ router.get('/ToDos', function(req, res) {
 
 
 /* post a new ToDo and push to Mongo */
-router.post('/NewToDo', function(req, res) {
+// router.post('/NewToDo', function(req, res) {
 
-    let oneNewToDo = new ToDos(req.body);  // call constuctor in ToDos code that makes a new mongo ToDo object
-    console.log(req.body);
-    oneNewToDo.save((err, todo) => {
-      if (err) {
-        res.status(500).send(err);
-      }
-      else {
-      console.log(todo);
-      res.status(201).json(todo);
-      }
-    });
-});
+//     let oneNewToDo = new ToDos(req.body);  // call constuctor in ToDos code that makes a new mongo ToDo object
+//     console.log(req.body);
+//     oneNewToDo.save((err, todo) => {
+//       if (err) {
+//         res.status(500).send(err);
+//       }
+//       else {
+//       console.log(todo);
+//       res.status(201).json(todo);
+//       }
+//     });
+// });
 
 
-router.delete('/DeleteToDo/:id', function (req, res) {
-  ToDos.deleteOne({ _id: req.params.id }, (err, note) => { 
+router.delete('/DeleteMotorcycle/:id', function (req, res) {
+  Motorcycle.deleteOne({ _id: req.params.id }, (err, note) => { 
     if (err) {
       res.status(404).send(err);
     }
-    res.status(200).json({ message: "ToDo successfully deleted" });
+    res.status(200).json({ message: "Motorcycle successfully deleted" });
   });
 });
 
 
-router.put('/UpdateToDo/:id', function (req, res) {
-  ToDos.findOneAndUpdate(
+router.put('/UpdateMotorcycle/:id', function (req, res) {
+  const { body: { make, model, vin, inWarehouse } } = req;
+  Motorcycle.findOneAndUpdate(
     { _id: req.params.id },
-    { title: req.body.title, detail: req.body.detail, priority: req.body.priority,   completed: req.body.completed },
+    { make, model, vin, inWarehouse },
    { new: true },
     (err, todo) => {
       if (err) {
@@ -94,14 +95,14 @@ router.put('/UpdateToDo/:id', function (req, res) {
 
 
   /* GET one ToDos */
-router.get('/FindToDo/:id', function(req, res) {
+router.get('/FindMotorcycle/:id', function(req, res) {
   console.log(req.params.id );
-  ToDos.find({ _id: req.params.id }, (err, oneToDo) => {
+  Motorcycle.find({ _id: req.params.id }, (err, motorcycle) => {
     if (err) {
       console.log(err);
       res.status(500).send(err);
     }
-    res.status(200).json(oneToDo);
+    res.status(200).json(motorcycle);
   });
 });
 

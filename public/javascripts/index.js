@@ -1,9 +1,9 @@
 
-function ToDo(pTitle, pDetail, pPriority) {
-    this.title= pTitle;
-    this.detail = pDetail;
-    this.priority = pPriority;
-    this.completed = false;
+function Motorcycle(make, model, vin, inWarehouse) {
+    this.make= make;
+    this.model = model;
+    this.vin = vin;
+    this.inWarehouse = inWarehouse;
   }
   var ClientNotes = [];  // our local copy of the cloud data
 
@@ -37,7 +37,7 @@ document.addEventListener("DOMContentLoaded", function (event) {
 
     document.getElementById("delete").addEventListener("click", function () {
         
-        var whichToDo = document.getElementById('deleteTitle').value;
+        var whichToDo = document.getElementById('deleteMotorcycle').value;
         var idToDelete = "";
         for(i=0; i< ClientNotes.length; i++){
             if(ClientNotes[i].title === whichToDo) {
@@ -48,7 +48,7 @@ document.addEventListener("DOMContentLoaded", function (event) {
         if(idToDelete != "")
         {
                      $.ajax({  
-                    url: 'DeleteToDo/'+ idToDelete,
+                    url: 'DeleteMotorcycle/'+ idToDelete,
                     type: 'DELETE',  
                     contentType: 'application/json',  
                     success: function (response) {  
@@ -66,18 +66,18 @@ document.addEventListener("DOMContentLoaded", function (event) {
 
 
 
-    document.getElementById("msubmit").addEventListener("click", function () {
-        var tTitle = document.getElementById("mtitle").value;
-        var tDetail = document.getElementById("mdetail").value;
-        var tPriority = document.getElementById("mpriority").value;
-        var oneToDo = new ToDo(tTitle, tDetail, tPriority);
-        oneToDo.completed =  document.getElementById("mcompleted").value;
+    document.getElementById("editSubmit").addEventListener("click", function () {
+        var make = document.getElementById("editMake").value;
+        var model = document.getElementById("editModel").value;
+        var vin = document.getElementById("editVIN").value;
+        var inWarehouse = document.getElementById("editInWarehouse").value;
+        var motorcycle = new Motorcycle(make, model, vin, inWarehouse);
         
             $.ajax({
-                url: 'UpdateToDo/'+idToFind,
+                url: 'UpdateMotorcycle/'+idToFind,
                 type: 'PUT',
                 contentType: 'application/json',
-                data: JSON.stringify(oneToDo),
+                data: JSON.stringify(motorcycle),
                     success: function (response) {  
                         console.log(response);  
                     },  
@@ -94,21 +94,21 @@ document.addEventListener("DOMContentLoaded", function (event) {
     var idToFind = ""; // using the same value from the find operation for the modify
     // find one to modify
     document.getElementById("find").addEventListener("click", function () {
-        var tTitle = document.getElementById("modTitle").value;
+        var vin = document.getElementById("editMotorcycle").value;
          idToFind = "";
         for(i=0; i< ClientNotes.length; i++){
-            if(ClientNotes[i].title === tTitle) {
+            if(ClientNotes[i].vin === vin) {
                 idToFind = ClientNotes[i]._id;
            }
         }
         console.log(idToFind);
  
-        $.get("/FindToDo/"+ idToFind, function(data, status){ 
-            console.log(data[0].title);
-            document.getElementById("mtitle").value = data[0].title;
-            document.getElementById("mdetail").value= data[0].detail;
-            document.getElementById("mpriority").value = data[0].priority;
-            document.getElementById("mcompleted").value = data[0].completed;
+        $.get("/FindMotorcycle/"+ idToFind, function(data, status){ 
+            console.log(data[0]);
+            document.getElementById("editMake").value = data[0].make;
+            document.getElementById("editModel").value= data[0].model;
+            document.getElementById("editVIN").value = data[0].vin;
+            document.getElementById("editInWarehouse").value = data[0].inWarehouse;
            
 
         });
@@ -126,7 +126,7 @@ ul.innerHTML = "";  // clears existing list so we don't duplicate old ones
 
 //var ul = document.createElement('ul')
 
-$.get("/ToDos", function(data, status){  // AJAX get
+$.get("/Motorcycles", function(data, status){  // AJAX get
     ClientNotes = data;  // put the returned server json data into our local array
 
     // sort array by one property

@@ -7,23 +7,23 @@ const mongoose = require("mongoose");
 // schema will enforce consistency in all our documents (records)
 const Schema = mongoose.Schema;
 
-const ToDoSchema = new Schema({
-  title: {
+const MotorcycleSchema = new Schema({
+  make: {
     type: String,
     required: true
   },
-  detail: {
+  model: {
     type: String,
     required: true
   },
-  completed: {
+  vin: {
+    type: String,
+    required: true
+  },
+  inWarehouse: {
     type: Boolean,
-    required: true
-  },
-  priority: {
-    type: Number,
     required: true
   }
 });
 
-module.exports = mongoose.model("ToDos", ToDoSchema);
+module.exports = mongoose.model("Motorcycle", MotorcycleSchema);
