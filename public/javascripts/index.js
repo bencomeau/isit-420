@@ -1,9 +1,9 @@
 
-function ToDo(pTitle, pDetail, pPriority) {
-    this.title= pTitle;
-    this.detail = pDetail;
-    this.priority = pPriority;
-    this.completed = false;
+function Motorcycle(pMake, pModel, pVin, pinWarehouse) {
+    this.make= pMake;
+    this.model = pModel;
+    this.vin = pVin;
+    this.inWarehouse = pinWarehouse;
   }
   var ClientNotes = [];  // our local copy of the cloud data
 
@@ -11,19 +11,19 @@ function ToDo(pTitle, pDetail, pPriority) {
 document.addEventListener("DOMContentLoaded", function (event) {
 
     document.getElementById("submit").addEventListener("click", function () {
-        var tTitle = document.getElementById("title").value;
-        var tDetail = document.getElementById("detail").value;
-        var tPriority = document.getElementById("priority").value;
-        var oneToDo = new ToDo(tTitle, tDetail, tPriority);
+        var tMake = document.getElementById("make").value;
+        var tModel = document.getElementById("model").value;
+        var tVin = document.getElementById("vin").value;
+        var oneMotorcycle = new Motorcycle(tMake, tModel, tVin);
 
         $.ajax({
-            url: '/NewToDo' ,
+            url: '/NewMotorcycle' ,
             method: 'POST',
             dataType: 'json',
             contentType: 'application/json',
-            data: JSON.stringify(oneToDo),
+            data: JSON.stringify(oneMotorcycle),
             success: function (result) {
-                console.log("added new note")
+                console.log("added new motorcycle")
             }
 
         });
@@ -67,10 +67,10 @@ document.addEventListener("DOMContentLoaded", function (event) {
 
 
     document.getElementById("msubmit").addEventListener("click", function () {
-        var tTitle = document.getElementById("mtitle").value;
-        var tDetail = document.getElementById("mdetail").value;
-        var tPriority = document.getElementById("mpriority").value;
-        var oneToDo = new ToDo(tTitle, tDetail, tPriority);
+        var tMake = document.getElementById("mtitle").value;
+        var tModel = document.getElementById("mdetail").value;
+        var tVin = document.getElementById("mpriority").value;
+        var oneToDo = new ToDo(tMake, tModel, tVin);
         oneToDo.completed =  document.getElementById("mcompleted").value;
         
             $.ajax({
@@ -94,10 +94,10 @@ document.addEventListener("DOMContentLoaded", function (event) {
     var idToFind = ""; // using the same value from the find operation for the modify
     // find one to modify
     document.getElementById("find").addEventListener("click", function () {
-        var tTitle = document.getElementById("modTitle").value;
+        var tMake = document.getElementById("modTitle").value;
          idToFind = "";
         for(i=0; i< ClientNotes.length; i++){
-            if(ClientNotes[i].title === tTitle) {
+            if(ClientNotes[i].title === tMake) {
                 idToFind = ClientNotes[i]._id;
            }
         }
@@ -126,7 +126,7 @@ ul.innerHTML = "";  // clears existing list so we don't duplicate old ones
 
 //var ul = document.createElement('ul')
 
-$.get("/ToDos", function(data, status){  // AJAX get
+$.get("/Motorcycles", function(data, status){  // AJAX get
     ClientNotes = data;  // put the returned server json data into our local array
 
     // sort array by one property
