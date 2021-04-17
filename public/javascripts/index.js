@@ -1,9 +1,9 @@
 
-function Motorcycle(make, model, vin, inWarehouse) {
-    this.make= make;
-    this.model = model;
-    this.vin = vin;
-    this.inWarehouse = inWarehouse;
+function Motorcycle(pMake, pModel, pVin, pinWarehouse) {
+    this.make= pMake;
+    this.model = pModel;
+    this.vin = pVin;
+    this.inWarehouse = pinWarehouse;
   }
   var ClientNotes = [];  // our local copy of the cloud data
 
@@ -11,19 +11,20 @@ function Motorcycle(make, model, vin, inWarehouse) {
 document.addEventListener("DOMContentLoaded", function (event) {
 
     document.getElementById("submit").addEventListener("click", function () {
-        var tTitle = document.getElementById("title").value;
-        var tDetail = document.getElementById("detail").value;
-        var tPriority = document.getElementById("priority").value;
-        var oneToDo = new ToDo(tTitle, tDetail, tPriority);
+        var tMake = document.getElementById("make").value;
+        var tModel = document.getElementById("model").value;
+        var tVin = document.getElementById("vin").value;
+        var tInWarehouse = document.getElementById("inWarehouse").value;
+        var oneMotorcycle = new Motorcycle(tMake, tModel, tVin, tInWarehouse);
 
         $.ajax({
-            url: '/NewToDo' ,
+            url: '/NewMotorcycle' ,
             method: 'POST',
             dataType: 'json',
             contentType: 'application/json',
-            data: JSON.stringify(oneToDo),
+            data: JSON.stringify(oneMotorcycle),
             success: function (result) {
-                console.log("added new note")
+                console.log("added new motorcycle")
             }
 
         });
@@ -36,11 +37,10 @@ document.addEventListener("DOMContentLoaded", function (event) {
 
 
     document.getElementById("delete").addEventListener("click", function () {
-        
-        var whichToDo = document.getElementById('deleteMotorcycle').value;
+        var vinToDelete = document.getElementById('deleteMotorcycle').value;
         var idToDelete = "";
         for(i=0; i< ClientNotes.length; i++){
-            if(ClientNotes[i].title === whichToDo) {
+            if(ClientNotes[i].vin === vinToDelete) {
                 idToDelete = ClientNotes[i]._id;
            }
         }
@@ -133,12 +133,14 @@ $.get("/Motorcycles", function(data, status){  // AJAX get
     ClientNotes.sort(compare);  // see compare method below
     console.log(data);
     //listDiv.appendChild(ul);
-    ClientNotes.forEach(ProcessOneToDo); // build one li for each item in array
-    function ProcessOneToDo(item, index) {
+    ClientNotes.forEach(ProcessOneMotorcycle); // build one li for each item in array
+    function ProcessOneMotorcycle(item, index) {
+        const { make, model, vin, inWarehouse } = item;
         var li = document.createElement('li');
         ul.appendChild(li);
 
-        li.innerHTML=li.innerHTML + index + ": " + " Priority: " + item.priority + "  " + item.title + ":  " + item.detail + " Done? "+ item.completed;
+        li.innerHTML =
+            `${index}: Make: ${make}, Model: ${model}, VIN: ${vin}, In Warehouse: ${inWarehouse}`;
     }
 });
 }

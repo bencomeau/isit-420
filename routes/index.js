@@ -10,7 +10,7 @@ const Motorcycle = require("../Motorcycle");
 // edited to include my non-admin, user level account and PW on mongo atlas
 // and also to include the name of the mongo DB that the collection
 const dbURI =
- "mongodb+srv://xxxxx:xxxxx@cluster0.vyteg.mongodb.net/myFirstDatabase?retryWrites=true&w=majority";
+ "mongodb+srv://xxxxxx:xxxxxxxxx@btfirstcluster.q5kdr.mongodb.net/Motorcycle?retryWrites=true&w=majority";
 
 // Make Mongoose use `findOneAndUpdate()`. Note that this option is `true`
 // by default, you need to set it to false.
@@ -53,20 +53,20 @@ router.get('/Motorcycles', function(req, res) {
 
 
 /* post a new ToDo and push to Mongo */
-// router.post('/NewToDo', function(req, res) {
+router.post('/NewMotorcycle', function(req, res) {
 
-//     let oneNewToDo = new ToDos(req.body);  // call constuctor in ToDos code that makes a new mongo ToDo object
-//     console.log(req.body);
-//     oneNewToDo.save((err, todo) => {
-//       if (err) {
-//         res.status(500).send(err);
-//       }
-//       else {
-//       console.log(todo);
-//       res.status(201).json(todo);
-//       }
-//     });
-// });
+    let oneNewMotorcycle = new Motorcycle(req.body);  // call constuctor in ToDos code that makes a new mongo ToDo object
+    console.log(req.body);
+    oneNewMotorcycle.save((err, motorcycle) => {
+      if (err) {
+        res.status(500).send(err);
+      }
+      else {
+      console.log(motorcycle);
+      res.status(201).json(motorcycle);
+      }
+    });
+});
 
 
 router.delete('/DeleteMotorcycle/:id', function (req, res) {
