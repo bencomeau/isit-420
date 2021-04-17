@@ -134,12 +134,14 @@ $.get("/Motorcycles", function(data, status){  // AJAX get
     ClientNotes.sort(compare);  // see compare method below
     console.log(data);
     //listDiv.appendChild(ul);
-    ClientNotes.forEach(ProcessOneToDo); // build one li for each item in array
-    function ProcessOneToDo(item, index) {
+    ClientNotes.forEach(ProcessOneMotorcycle); // build one li for each item in array
+    function ProcessOneMotorcycle(item, index) {
+        const { make, model, vin, inWarehouse } = item;
         var li = document.createElement('li');
         ul.appendChild(li);
 
-        li.innerHTML=li.innerHTML + index + ": " + " Priority: " + item.priority + "  " + item.title + ":  " + item.detail + " Done? "+ item.completed;
+        li.innerHTML =
+            `${index}: Make: ${make}, Model: ${model}, VIN: ${vin}, In Warehouse: ${inWarehouse}`;
     }
 });
 }
