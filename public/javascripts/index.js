@@ -14,7 +14,8 @@ document.addEventListener("DOMContentLoaded", function (event) {
         var tMake = document.getElementById("make").value;
         var tModel = document.getElementById("model").value;
         var tVin = document.getElementById("vin").value;
-        var oneMotorcycle = new Motorcycle(tMake, tModel, tVin);
+        var tInWarehouse = document.getElementById("inWarehouse").value;
+        var oneMotorcycle = new Motorcycle(tMake, tModel, tVin, tInWarehouse);
 
         $.ajax({
             url: '/NewMotorcycle' ,
