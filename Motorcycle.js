@@ -18,7 +18,8 @@ const MotorcycleSchema = new Schema({
   },
   vin: {
     type: String,
-    required: true
+    required: true,
+    unique: true,
   },
   inWarehouse: {
     type: Boolean,
