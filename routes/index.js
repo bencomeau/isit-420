@@ -69,20 +69,21 @@ router.post('/NewMotorcycle', function(req, res) {
 });
 
 
-router.delete('/DeleteToDo/:id', function (req, res) {
-  ToDos.deleteOne({ _id: req.params.id }, (err, note) => { 
+router.delete('/DeleteMotorcycle/:id', function (req, res) {
+  Motorcycle.deleteOne({ _id: req.params.id }, (err, note) => { 
     if (err) {
       res.status(404).send(err);
     }
-    res.status(200).json({ message: "ToDo successfully deleted" });
+    res.status(200).json({ message: "Motorcycle successfully deleted" });
   });
 });
 
 
-router.put('/UpdateToDo/:id', function (req, res) {
-  ToDos.findOneAndUpdate(
+router.put('/UpdateMotorcycle/:id', function (req, res) {
+  const { body: { make, model, vin, inWarehouse } } = req;
+  Motorcycle.findOneAndUpdate(
     { _id: req.params.id },
-    { title: req.body.title, detail: req.body.detail, priority: req.body.priority,   completed: req.body.completed },
+    { make, model, vin, inWarehouse },
    { new: true },
     (err, todo) => {
       if (err) {

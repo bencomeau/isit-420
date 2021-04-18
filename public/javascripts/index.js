@@ -37,11 +37,10 @@ document.addEventListener("DOMContentLoaded", function (event) {
 
 
     document.getElementById("delete").addEventListener("click", function () {
-        
-        var whichToDo = document.getElementById('deleteTitle').value;
+        var vinToDelete = document.getElementById('deleteMotorcycle').value;
         var idToDelete = "";
         for(i=0; i< ClientNotes.length; i++){
-            if(ClientNotes[i].title === whichToDo) {
+            if(ClientNotes[i].vin === vinToDelete) {
                 idToDelete = ClientNotes[i]._id;
            }
         }
@@ -49,7 +48,7 @@ document.addEventListener("DOMContentLoaded", function (event) {
         if(idToDelete != "")
         {
                      $.ajax({  
-                    url: 'DeleteToDo/'+ idToDelete,
+                    url: 'DeleteMotorcycle/'+ idToDelete,
                     type: 'DELETE',  
                     contentType: 'application/json',  
                     success: function (response) {  
@@ -67,18 +66,18 @@ document.addEventListener("DOMContentLoaded", function (event) {
 
 
 
-    document.getElementById("msubmit").addEventListener("click", function () {
-        var tMake = document.getElementById("mtitle").value;
-        var tModel = document.getElementById("mdetail").value;
-        var tVin = document.getElementById("mpriority").value;
-        var oneToDo = new ToDo(tMake, tModel, tVin);
-        oneToDo.completed =  document.getElementById("mcompleted").value;
+    document.getElementById("editSubmit").addEventListener("click", function () {
+        var make = document.getElementById("editMake").value;
+        var model = document.getElementById("editModel").value;
+        var vin = document.getElementById("editVIN").value;
+        var inWarehouse = document.getElementById("editInWarehouse").value;
+        var motorcycle = new Motorcycle(make, model, vin, inWarehouse);
         
             $.ajax({
-                url: 'UpdateToDo/'+idToFind,
+                url: 'UpdateMotorcycle/'+idToFind,
                 type: 'PUT',
                 contentType: 'application/json',
-                data: JSON.stringify(oneToDo),
+                data: JSON.stringify(motorcycle),
                     success: function (response) {  
                         console.log(response);  
                     },  
@@ -95,21 +94,21 @@ document.addEventListener("DOMContentLoaded", function (event) {
     var idToFind = ""; // using the same value from the find operation for the modify
     // find one to modify
     document.getElementById("find").addEventListener("click", function () {
-        var tMake = document.getElementById("modTitle").value;
+        var vin = document.getElementById("editMotorcycle").value;
          idToFind = "";
         for(i=0; i< ClientNotes.length; i++){
-            if(ClientNotes[i].title === tMake) {
+            if(ClientNotes[i].vin === vin) {
                 idToFind = ClientNotes[i]._id;
            }
         }
         console.log(idToFind);
  
-        $.get("/FindToDo/"+ idToFind, function(data, status){ 
-            console.log(data[0].title);
-            document.getElementById("mtitle").value = data[0].title;
-            document.getElementById("mdetail").value= data[0].detail;
-            document.getElementById("mpriority").value = data[0].priority;
-            document.getElementById("mcompleted").value = data[0].completed;
+        $.get("/FindMotorcycle/"+ idToFind, function(data, status){ 
+            console.log(data[0]);
+            document.getElementById("editMake").value = data[0].make;
+            document.getElementById("editModel").value= data[0].model;
+            document.getElementById("editVIN").value = data[0].vin;
+            document.getElementById("editInWarehouse").value = data[0].inWarehouse;
            
 
         });
